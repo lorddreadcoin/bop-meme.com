@@ -233,6 +233,114 @@ function addDynamicStyles() {
     document.head.appendChild(style);
 }
 
+// YouTube API integration
+let youtubePlayer;
+
+// Load YouTube API
+function loadYouTubeAPI() {
+    const tag = document.createElement('script');
+    tag.src = 'https://www.youtube.com/iframe_api';
+    const firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+}
+
+// Called automatically when YouTube API is ready
+function onYouTubeIframeAPIReady() {
+    const playerElement = document.querySelector('.audio-iframe');
+    
+    if (playerElement) {
+        // Extract video ID from src attribute
+        const src = playerElement.getAttribute('src');
+        const videoId = src.match(/embed\/([^\?]+)/)?.[1];
+        
+        if (videoId) {
+            youtubePlayer = new YT.Player(playerElement, {
+                videoId: videoId,
+                playerVars: {
+                    autoplay: 1,
+                    controls: 0,
+                    showinfo: 0,
+                    loop: 1,
+                    fs: 0,
+                    disablekb: 1,
+                    playsinline: 1
+                },
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+    }
+}
+
+// When player is ready
+function onPlayerReady(event) {
+    // Set initial volume to 50%
+    event.target.setVolume(50);
+    
+    // Initialize volume controls
+    initVolumeControls();
+    
+    console.log('YouTube audio player ready!');
+}
+
+// When player state changes
+function onPlayerStateChange(event) {
+    // If video ends, replay it for continuous loop
+    if (event.data === YT.PlayerState.ENDED) {
+        event.target.playVideo();
+    }
+}
+
+// Initialize volume controls
+function initVolumeControls() {
+    const volumeSlider = document.getElementById('volume-slider');
+    const volumeToggle = document.getElementById('volume-toggle');
+    
+    if (volumeSlider && volumeToggle) {
+        // Update volume when slider changes
+        volumeSlider.addEventListener('input', function() {
+            const volume = this.value;
+            if (youtubePlayer && youtubePlayer.setVolume) {
+                youtubePlayer.setVolume(volume);
+                
+                // Update slider background
+                const percentage = volume + '%';
+                this.style.background = `linear-gradient(to right, var(--neon-blue) ${percentage}, rgba(255, 255, 255, 0.2) ${percentage})`;
+                
+                // Update mute/unmute button
+                volumeToggle.textContent = volume > 0 ? '🔊' : '🔇';
+                
+                // Store volume preference
+                localStorage.setItem('bopVolume', volume);
+            }
+        });
+        
+        // Toggle mute/unmute
+        volumeToggle.addEventListener('click', function() {
+            if (youtubePlayer && youtubePlayer.isMuted && youtubePlayer.unMute && youtubePlayer.mute) {
+                if (youtubePlayer.isMuted()) {
+                    youtubePlayer.unMute();
+                    volumeToggle.textContent = '🔊';
+                    volumeSlider.value = localStorage.getItem('bopVolume') || 50;
+                } else {
+                    youtubePlayer.mute();
+                    volumeToggle.textContent = '🔇';
+                }
+            }
+        });
+        
+        // Load saved volume preference
+        const savedVolume = localStorage.getItem('bopVolume');
+        if (savedVolume) {
+            volumeSlider.value = savedVolume;
+            const percentage = savedVolume + '%';
+            volumeSlider.style.background = `linear-gradient(to right, var(--neon-blue) ${percentage}, rgba(255, 255, 255, 0.2) ${percentage})`;
+        }
+    }
+}
+
 // Main initialization
 document.addEventListener('DOMContentLoaded', function() {
     console.log('🚀 BOP website loaded successfully with cyberpunk enhancements!');
@@ -242,6 +350,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initScrollAnimations();
     initParallax();
     addDynamicStyles();
+    loadYouTubeAPI();
     
     // Get the current year for the footer if element exists
     const yearElement = document.getElementById('current-year');
