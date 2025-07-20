@@ -347,6 +347,18 @@ function initVolumeControls() {
 
 // Main initialization
 document.addEventListener('DOMContentLoaded', function() {
+    // Add hover effects to contract items
+    const contractItems = document.querySelectorAll('.contract-item');
+    contractItems.forEach(item => {
+        item.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-10px)';
+            this.style.boxShadow = '0 0 30px var(--neon-pink)';
+        });
+        item.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+            this.style.boxShadow = 'none';
+        });
+    });
     console.log('🚀 BOP website loaded successfully with cyberpunk enhancements!');
     
     // Initialize all features
