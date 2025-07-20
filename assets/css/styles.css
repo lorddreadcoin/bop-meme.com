@@ -1274,3 +1274,19 @@ section {
     opacity: 1;
   }
 }
+
+/* Audio prompt pulse animation */
+@keyframes pulse {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    box-shadow: 0 0 30px rgba(0, 240, 255, 0.8);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.05);
+    box-shadow: 0 0 40px rgba(0, 240, 255, 1);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    box-shadow: 0 0 30px rgba(0, 240, 255, 0.8);
+  }
+}

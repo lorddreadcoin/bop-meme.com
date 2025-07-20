@@ -147,39 +147,6 @@ function initCarousel() {
         isDragging = false;
         endX = e.changedTouches[0].clientX;
         const diff = startX - endX;
-        
-// Audio player functionality
-document.addEventListener('DOMContentLoaded', () => {
-    const audio = document.getElementById('bop-audio');
-    const volumeSlider = document.getElementById('volume-slider');
-    const volumeToggle = document.getElementById('volume-toggle');
-
-    // Play audio on page load
-    audio.play();
-
-    // Toggle mute on button click
-    volumeToggle.addEventListener('click', () => {
-        audio.muted = !audio.muted;
-        volumeToggle.textContent = audio.muted ? '🔇' : '🔊';
-    });
-
-    // Update volume on slider change
-    volumeSlider.addEventListener('input', (e) => {
-        audio.volume = parseFloat(e.target.value);
-    });
-
-    // Adjust volume based on scroll position
-    window.addEventListener('scroll', () => {
-        if (!audio.muted) {
-            const scrollPosition = window.scrollY;
-            const maxScroll = document.body.offsetHeight - window.innerHeight;
-            const volume = 0.5 + (scrollPosition / maxScroll) * 0.5;
-            audio.volume = Math.min(Math.max(volume, 0), 1);
-    });
-}});
-            volumeSlider.value = audio.volume.toString();
-        }
-});
         if (Math.abs(diff) > 50) { // Minimum swipe distance
             if (diff > 0) {
                 nextSlide();
@@ -480,24 +447,114 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     console.log('✨ All BOP enhancements initialized!');
+    
+    // Initialize audio player
+    initAudioPlayer();
 });
+
 // Audio player functionality
-document.addEventListener('DOMContentLoaded', () => {
+function initAudioPlayer() {
     const audio = document.getElementById('bop-audio');
     const volumeSlider = document.getElementById('volume-slider');
     const volumeToggle = document.getElementById('volume-toggle');
-
-    // Play audio on page load
-    audio.play();
-
-    // Toggle mute on button click
-    volumeToggle.addEventListener('click', () => {
-        audio.muted = !audio.muted;
-        volumeToggle.textContent = audio.muted ? '🔇' : '🔊';
+    
+    if (!audio || !volumeSlider || !volumeToggle) {
+        console.log('Audio elements not found, skipping audio initialization');
+        return;
+    }
+    
+    let isPlaying = false;
+    
+    // Function to attempt audio play with fallback
+    async function tryPlayAudio() {
+        try {
+            await audio.play();
+            isPlaying = true;
+            volumeToggle.textContent = '🔊';
+            console.log('🎵 Audio started playing');
+        } catch (error) {
+            console.log('⚠️ Autoplay blocked by browser. Click to play audio.');
+            isPlaying = false;
+            volumeToggle.textContent = '▶️';
+            
+            // Show user interaction prompt
+            showAudioPrompt();
+        }
+    }
+    
+    // Show prompt for user to enable audio
+    function showAudioPrompt() {
+        const prompt = document.createElement('div');
+        prompt.innerHTML = '🎵 Click to enable BOP vibes!';
+        prompt.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-pink));
+            color: white;
+            padding: 20px 30px;
+            border-radius: 25px;
+            font-weight: bold;
+            z-index: 10000;
+            cursor: pointer;
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.8);
+            animation: pulse 2s infinite;
+        `;
+        
+        prompt.onclick = () => {
+            tryPlayAudio();
+            document.body.removeChild(prompt);
+        };
+        
+        document.body.appendChild(prompt);
+        
+        // Auto-remove after 5 seconds
+        setTimeout(() => {
+            if (document.body.contains(prompt)) {
+                document.body.removeChild(prompt);
+            }
+        }, 5000);
+    }
+    
+    // Toggle play/pause and mute
+    volumeToggle.addEventListener('click', async () => {
+        if (!isPlaying) {
+            await tryPlayAudio();
+        } else {
+            if (audio.muted) {
+                audio.muted = false;
+                volumeToggle.textContent = '🔊';
+            } else {
+                audio.muted = true;
+                volumeToggle.textContent = '🔇';
+            }
+        }
     });
-
+    
     // Update volume on slider change
     volumeSlider.addEventListener('input', () => {
-        audio.volume = volumeSlider.value;
+        audio.volume = parseFloat(volumeSlider.value);
+        if (audio.volume > 0 && audio.muted) {
+            audio.muted = false;
+            volumeToggle.textContent = '🔊';
+        }
     });
-});
+    
+    // Set initial volume
+    audio.volume = 0.5;
+    volumeSlider.value = '0.5';
+    
+    // Try to start audio on page load
+    tryPlayAudio();
+    
+    // Also try to play on first user interaction
+    document.addEventListener('click', function firstClick() {
+        if (!isPlaying) {
+            tryPlayAudio();
+        }
+        document.removeEventListener('click', firstClick);
+    }, { once: true });
+    
+    console.log('🎵 Audio player initialized');
+}
