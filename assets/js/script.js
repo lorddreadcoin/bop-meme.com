@@ -449,3 +449,23 @@ document.addEventListener('DOMContentLoaded', function() {
     
     console.log('✨ All BOP enhancements initialized!');
 });
+// Audio player functionality
+document.addEventListener('DOMContentLoaded', () => {
+    const audio = document.getElementById('bop-audio');
+    const volumeSlider = document.getElementById('volume-slider');
+    const volumeToggle = document.getElementById('volume-toggle');
+
+    // Play audio on page load
+    audio.play();
+
+    // Toggle mute on button click
+    volumeToggle.addEventListener('click', () => {
+        audio.muted = !audio.muted;
+        volumeToggle.textContent = audio.muted ? '🔇' : '🔊';
+    });
+
+    // Update volume on slider change
+    volumeSlider.addEventListener('input', () => {
+        audio.volume = volumeSlider.value;
+    });
+});
