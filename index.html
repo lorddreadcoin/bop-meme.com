@@ -10,10 +10,18 @@
 <body>
     <section id="home">
         <div class="container">
-            <h1>BOP</h1>
-            <h2>A tribute to $BONK and $SOL</h2>
-            <img src="assets/images/bopbeachycoin.png" alt="BOP Logo" class="logo">
+            <h1 class="neon-glow">BOP</h1>
+            <h2 class="subtitle-glow">A tribute to $BONK and $SOL</h2>
+            <div class="main-logo-container">
+                <a href="https://jup.ag/tokens/y19kKScyuMhwbgkaaHMMnbqXqubyLk2F1AgdXidbonk" target="_blank" rel="noopener" class="jupiter-link">
+                    <img src="assets/images/bop1.png" alt="BOP - Buy & Sell on Jupiter" class="main-logo hover-animate">
+                    <div class="buy-sell-overlay">
+                        <span class="buy-text">🚀 Trade on Jupiter</span>
+                    </div>
+                </a>
+            </div>
         </div>
+        <div class="neon-grid-background"></div>
     </section>
     <section id="about">
         <div class="container">
@@ -23,16 +31,73 @@
     </section>
     <section id="contract-info">
         <div class="container">
-            <h2>Contract Information</h2>
-            <p>Token Contract: <code>y19kKScyuMhwbgkaaHMMnbqXqubyLk2F1AgdXidbonk</code></p>
-            <p>Pairing Address: <code>9RBUQTE88wHFbbKgFSMgLeWcTWPyo8dpWpTJ4yaLmZqD</code></p>
-            <p>Creator Wallet: <code>4z76tAVYXZd34qeFGCVqWrQjagLu5c6FBY2gK4YzXbHm</code></p>
+            <h2 class="section-title-glow">Contract Information</h2>
+            <div class="contract-grid">
+                <div class="contract-item">
+                    <label>Token Contract:</label>
+                    <div class="contract-address" onclick="copyToClipboard('y19kKScyuMhwbgkaaHMMnbqXqubyLk2F1AgdXidbonk')">
+                        <code class="neon-code">y19kKScyuMhwbgkaaHMMnbqXqubyLk2F1AgdXidbonk</code>
+                        <span class="copy-icon">📋</span>
+                    </div>
+                </div>
+                <div class="contract-item">
+                    <label>Pairing Address:</label>
+                    <div class="contract-address" onclick="copyToClipboard('9RBUQTE88wHFbbKgFSMgLeWcTWPyo8dpWpTJ4yaLmZqD')">
+                        <code class="neon-code">9RBUQTE88wHFbbKgFSMgLeWcTWPyo8dpWpTJ4yaLmZqD</code>
+                        <span class="copy-icon">📋</span>
+                    </div>
+                </div>
+                <div class="contract-item">
+                    <label>Creator Wallet:</label>
+                    <div class="contract-address" onclick="copyToClipboard('4z76tAVYXZd34qeFGCVqWrQjagLu5c6FBY2gK4YzXbHm')">
+                        <code class="neon-code">4z76tAVYXZd34qeFGCVqWrQjagLu5c6FBY2gK4YzXbHm</code>
+                        <span class="copy-icon">📋</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
     <section id="dexscreener">
         <div class="container">
-            <h2>DEX Screener</h2>
-            <iframe src="https://dexscreener.com/solana/9RBUQTE88wHFbbKgFSMgLeWcTWPyo8dpWpTJ4yaLmZqD?embed=1&theme=dark" frameborder="0" width="100%" height="500" title="BOP Token DEX Screener Chart"></iframe>
+            <h2 class="section-title-glow">DEX Screener</h2>
+            <div class="dex-container">
+                <iframe src="https://dexscreener.com/solana/9RBUQTE88wHFbbKgFSMgLeWcTWPyo8dpWpTJ4yaLmZqD?embed=1&theme=dark" frameborder="0" width="100%" height="300" title="BOP Token DEX Screener Chart" class="dex-iframe"></iframe>
+            </div>
+        </div>
+    </section>
+    <section id="meme-gallery">
+        <div class="container">
+            <h2 class="section-title-glow">BOP Meme Gallery</h2>
+            <div class="carousel-container">
+                <div class="carousel-track" id="carouselTrack">
+                    <div class="carousel-slide">
+                        <img src="assets/images/4boppies.png" alt="4 Boppies" class="carousel-image hover-animate">
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="assets/images/snoopbop.png" alt="Snoop BOP" class="carousel-image hover-animate">
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="assets/images/moonbop.png" alt="Moon BOP" class="carousel-image hover-animate">
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="assets/images/bopmartinipoolside.png" alt="BOP Martini Poolside" class="carousel-image hover-animate">
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="assets/images/bopclubber.png" alt="BOP Clubber" class="carousel-image hover-animate">
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="assets/images/bopshop.png" alt="BOP Shop" class="carousel-image hover-animate">
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="assets/images/boppin.png" alt="Boppin" class="carousel-image hover-animate">
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="assets/images/moonbopbikinichain.png" alt="Moon BOP Bikini Chain" class="carousel-image hover-animate">
+                    </div>
+                </div>
+                <button class="carousel-btn carousel-prev" id="prevBtn">‹</button>
+                <button class="carousel-btn carousel-next" id="nextBtn">›</button>
+            </div>
         </div>
     </section>
     <section id="social-links">
