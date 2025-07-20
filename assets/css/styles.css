@@ -305,14 +305,19 @@ section {
 .carousel-track {
   display: flex;
   transition: transform 0.5s ease;
+  width: 100%;
+  position: relative;
 }
 
 .carousel-slide {
   min-width: 100%;
+  width: 100%;
+  flex: 0 0 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 20px;
+  box-sizing: border-box;
 }
 
 .carousel-image {
@@ -320,6 +325,8 @@ section {
   max-height: 400px;
   border-radius: var(--border-radius);
   box-shadow: 0 0 20px var(--neon-green);
+  object-fit: contain;
+  transition: transform 0.3s ease, filter 0.3s ease, box-shadow 0.3s ease;
 }
 
 .carousel-btn {

@@ -54,13 +54,40 @@ function initCarousel() {
     const nextBtn = document.getElementById('nextBtn');
     const slides = document.querySelectorAll('.carousel-slide');
     
-    if (!track || !prevBtn || !nextBtn) return;
+    if (!track || !prevBtn || !nextBtn || slides.length === 0) return;
     
     totalSlides = slides.length;
     
+    // Set initial positions for all slides
+    slides.forEach((slide, index) => {
+        slide.style.left = `${index * 100}%`;
+        // Ensure images are loaded before starting carousel
+        const img = slide.querySelector('img');
+        if (img) {
+            img.addEventListener('load', () => {
+                console.log(`Image ${index} loaded successfully`);
+            });
+            img.addEventListener('error', () => {
+                console.error(`Error loading image ${index}`);
+            });
+        }
+    });
+    
     function updateCarousel() {
+        if (!track) return;
         const translateX = -currentSlide * 100;
         track.style.transform = `translateX(${translateX}%)`;
+        
+        // Update active state for visual indication
+        slides.forEach((slide, index) => {
+            if (index === currentSlide) {
+                slide.setAttribute('aria-current', 'true');
+                slide.style.opacity = '1';
+            } else {
+                slide.removeAttribute('aria-current');
+                slide.style.opacity = '0.8';
+            }
+        });
     }
     
     function nextSlide() {
@@ -78,17 +105,43 @@ function initCarousel() {
     prevBtn.addEventListener('click', prevSlide);
     
     // Auto-advance carousel every 5 seconds
-    setInterval(nextSlide, 5000);
+    const autoAdvance = setInterval(nextSlide, 5000);
+    
+    // Pause auto-advance on hover
+    track.addEventListener('mouseenter', () => {
+        clearInterval(autoAdvance);
+    });
+    
+    track.addEventListener('mouseleave', () => {
+        clearInterval(autoAdvance);
+        // Restart auto-advance
+        setInterval(nextSlide, 5000);
+    });
     
     // Touch/swipe support for mobile
     let startX = 0;
     let endX = 0;
+    let isDragging = false;
     
     track.addEventListener('touchstart', (e) => {
         startX = e.touches[0].clientX;
+        isDragging = true;
+        // Prevent default to avoid page scrolling while swiping
+        e.preventDefault();
+    }, { passive: false });
+    
+    track.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+        const currentX = e.touches[0].clientX;
+        const diff = startX - currentX;
+        // Add some resistance to the drag
+        const dragOffset = diff * 0.5;
+        track.style.transform = `translateX(${-currentSlide * 100 - dragOffset / track.offsetWidth * 100}%)`;
     });
     
     track.addEventListener('touchend', (e) => {
+        if (!isDragging) return;
+        isDragging = false;
         endX = e.changedTouches[0].clientX;
         const diff = startX - endX;
         
@@ -98,8 +151,16 @@ function initCarousel() {
             } else {
                 prevSlide();
             }
+        } else {
+            // Return to current slide if swipe wasn't far enough
+            updateCarousel();
         }
     });
+    
+    // Initialize the carousel
+    updateCarousel();
+    console.log('Carousel initialized with', totalSlides, 'slides');
+
 }
 
 // Intersection Observer for entrance animations
