@@ -545,16 +545,82 @@ function initAudioPlayer() {
     audio.volume = 0.5;
     volumeSlider.value = '0.5';
     
-    // Try to start audio on page load
+    // Immediate audio start attempts
+    // Try to play immediately
     tryPlayAudio();
     
-    // Also try to play on first user interaction
-    document.addEventListener('click', function firstClick() {
+    // Auto-start audio immediately on page load
+    setTimeout(() => {
+        // Automatically trigger the volume button click to start audio
         if (!isPlaying) {
-            tryPlayAudio();
+            volumeToggle.click();
         }
-        document.removeEventListener('click', firstClick);
-    }, { once: true });
+    }, 50);
     
-    console.log('🎵 Audio player initialized');
+    // Another immediate attempt
+    setTimeout(() => {
+        if (!isPlaying) {
+            audio.muted = false;
+            audio.play().catch(() => {
+                // If still fails, try clicking the button
+                volumeToggle.click();
+            });
+        }
+    }, 100);
+    
+    // Also try multiple times in case first attempt fails
+    const autoPlayAttempts = [500, 1000, 2000];
+    autoPlayAttempts.forEach(delay => {
+        setTimeout(() => {
+            if (!isPlaying) {
+                tryPlayAudio();
+            }
+        }, delay);
+    });
+    
+    // Try to play on any user interaction
+    const userInteractionEvents = ['click', 'touchstart', 'keydown', 'mousemove'];
+    userInteractionEvents.forEach(eventType => {
+        document.addEventListener(eventType, function firstInteraction() {
+            if (!isPlaying) {
+                tryPlayAudio();
+            }
+            // Remove all event listeners after first successful play
+            userInteractionEvents.forEach(event => {
+                document.removeEventListener(event, firstInteraction);
+            });
+        }, { once: true });
+    });
+    
+    // Try to play when page becomes visible or focused
+    document.addEventListener('visibilitychange', () => {
+        if (!document.hidden && !isPlaying) {
+            setTimeout(() => tryPlayAudio(), 100);
+        }
+    });
+    
+    window.addEventListener('focus', () => {
+        if (!isPlaying) {
+            setTimeout(() => tryPlayAudio(), 100);
+        }
+    });
+    
+    // Try to play when page is fully loaded
+    if (document.readyState === 'complete') {
+        setTimeout(() => {
+            if (!isPlaying) {
+                tryPlayAudio();
+            }
+        }, 200);
+    } else {
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                if (!isPlaying) {
+                    tryPlayAudio();
+                }
+            }, 200);
+        });
+    }
+    
+    console.log('🎵 Audio player initialized with aggressive autoplay');
 }
