@@ -148,6 +148,35 @@ function initCarousel() {
         endX = e.changedTouches[0].clientX;
         const diff = startX - endX;
         
+// Audio player functionality
+document.addEventListener('DOMContentLoaded', () => {
+    const audio = document.getElementById('bop-audio');
+    const volumeSlider = document.getElementById('volume-slider');
+    const volumeToggle = document.getElementById('volume-toggle');
+
+    // Play audio on page load
+    audio.play();
+
+    // Toggle mute on button click
+    volumeToggle.addEventListener('click', () => {
+        audio.muted = !audio.muted;
+        volumeToggle.textContent = audio.muted ? '🔇' : '🔊';
+    });
+
+    // Update volume on slider change
+    volumeSlider.addEventListener('input', (e) => {
+        audio.volume = parseFloat(e.target.value);
+    });
+
+    // Adjust volume based on scroll position
+    window.addEventListener('scroll', () => {
+        const scrollPosition = window.scrollY;
+        const maxScroll = document.body.offsetHeight - window.innerHeight;
+        const volume = 0.5 + (scrollPosition / maxScroll) * 0.5;
+        audio.volume = Math.min(Math.max(volume, 0), 1);
+        volumeSlider.value = audio.volume.toString();
+    });
+});
         if (Math.abs(diff) > 50) { // Minimum swipe distance
             if (diff > 0) {
                 nextSlide();
