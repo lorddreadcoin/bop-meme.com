@@ -170,12 +170,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Adjust volume based on scroll position
     window.addEventListener('scroll', () => {
-        const scrollPosition = window.scrollY;
-        const maxScroll = document.body.offsetHeight - window.innerHeight;
-        const volume = 0.5 + (scrollPosition / maxScroll) * 0.5;
-        audio.volume = Math.min(Math.max(volume, 0), 1);
-        volumeSlider.value = audio.volume.toString();
-    });
+        if (!audio.muted) {
+            const scrollPosition = window.scrollY;
+            const maxScroll = document.body.offsetHeight - window.innerHeight;
+            const volume = 0.5 + (scrollPosition / maxScroll) * 0.5;
+            audio.volume = Math.min(Math.max(volume, 0), 1);
+            volumeSlider.value = audio.volume.toString();
+        }
 });
         if (Math.abs(diff) > 50) { // Minimum swipe distance
             if (diff > 0) {
