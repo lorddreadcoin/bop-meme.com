@@ -61,16 +61,20 @@ function initCarousel() {
     // Set initial positions for all slides
     slides.forEach((slide, index) => {
         slide.style.left = `${index * 100}%`;
-        // Ensure images are loaded before starting carousel
-        const img = slide.querySelector('img');
-        if (img) {
+        // Add event listeners for image loading
+        const images = track.querySelectorAll('img');
+        let loadedImages = 0;
+        images.forEach((img) => {
             img.addEventListener('load', () => {
-                console.log(`Image ${index} loaded successfully`);
+                loadedImages++;
+                if (loadedImages === images.length) {
+                    updateCarousel();
+                }
             });
             img.addEventListener('error', () => {
-                console.error(`Error loading image ${index}`);
+                console.error('Error loading image');
             });
-        }
+        });
     });
     
     function updateCarousel() {
@@ -239,7 +243,7 @@ let youtubePlayer;
 // Load YouTube API
 function loadYouTubeAPI() {
     const tag = document.createElement('script');
-    tag.src = 'https://www.youtube.com/iframe_api';
+    tag.src = 'https://www.youtube-nocookie.com/iframe_api';
     const firstScriptTag = document.getElementsByTagName('script')[0];
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 }

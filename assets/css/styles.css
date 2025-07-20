@@ -74,13 +74,22 @@ body {
   font-size: 4rem;
   font-weight: bold;
   color: var(--neon-blue);
-  text-shadow: 
+  text-shadow:
     0 0 5px var(--neon-blue),
     0 0 10px var(--neon-blue),
     0 0 20px var(--neon-blue),
     0 0 40px var(--neon-blue);
-  animation: neonFlicker 2s ease-in-out infinite alternate;
+  animation: neonFlicker 2s ease-in-out infinite alternate, neonColorRotate 6s ease-in-out infinite;
   margin-bottom: 1rem;
+}
+
+@keyframes neonColorRotate {
+  0% { color: var(--neon-blue); text-shadow: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue), 0 0 40px var(--neon-blue); }
+  20% { color: var(--neon-pink); text-shadow: 0 0 5px var(--neon-pink), 0 0 10px var(--neon-pink), 0 0 20px var(--neon-pink), 0 0 40px var(--neon-pink); }
+  40% { color: var(--neon-green); text-shadow: 0 0 5px var(--neon-green), 0 0 10px var(--neon-green), 0 0 20px var(--neon-green), 0 0 40px var(--neon-green); }
+  60% { color: var(--neon-purple); text-shadow: 0 0 5px var(--neon-purple), 0 0 10px var(--neon-purple), 0 0 20px var(--neon-purple), 0 0 40px var(--neon-purple); }
+  80% { color: var(--neon-orange); text-shadow: 0 0 5px var(--neon-orange), 0 0 10px var(--neon-orange), 0 0 20px var(--neon-orange), 0 0 40px var(--neon-orange); }
+  100% { color: var(--neon-blue); text-shadow: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-blue), 0 0 20px var(--neon-blue), 0 0 40px var(--neon-blue); }
 }
 
 .subtitle-glow {
