@@ -175,6 +175,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const maxScroll = document.body.offsetHeight - window.innerHeight;
             const volume = 0.5 + (scrollPosition / maxScroll) * 0.5;
             audio.volume = Math.min(Math.max(volume, 0), 1);
+    });
+}});
             volumeSlider.value = audio.volume.toString();
         }
 });
