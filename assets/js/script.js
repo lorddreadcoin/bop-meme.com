@@ -407,7 +407,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize all features
     initCarousel();
     initScrollAnimations();
-    initParallax();
+    // initParallax();
     addDynamicStyles();
     loadYouTubeAPI();
     

@@ -1,6 +1,16 @@
 /* Custom Properties - Cyberpunk Neon Theme */
 :root {
   --neon-blue: #00f0ff;
+  
+  /* Add animation for background scrolling */
+  @keyframes scrollBackground {
+    0% {
+      background-position: 0% 0%;
+    }
+    100% {
+      background-position: 100% 0%;
+    }
+  }
   --neon-pink: #ff006e;
   --neon-green: #39ff14;
   --neon-purple: #bf00ff;
@@ -159,11 +169,12 @@ body {
 /* Scrolling Background Banner */
 body {
   background-image: url('../images/bopbeachy.png');
-  background-repeat: no-repeat;
-  background-position: center top;
+  background-repeat: repeat-x;
+  background-position: 0% 0%;
   background-size: cover;
   background-color: var(--darker-bg);
   position: relative;
+  animation: scrollBackground 60s linear infinite;
 }
 
 /* TRON Grid Overlay */
