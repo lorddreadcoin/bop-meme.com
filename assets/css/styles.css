@@ -13,119 +13,130 @@
   --border-radius: 10px;
 }
 
-/* Twitter Call-to-Action Section */
-#twitter-cta {
-  background: linear-gradient(135deg, var(--neon-pink) 0%, var(--neon-purple) 50%, var(--neon-blue) 100%);
-  padding: 20px 0;
+/* Unified Hero Banner */
+#hero-banner {
   position: relative;
-  overflow: hidden;
-}
-
-#twitter-cta::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: url('../images/bopbeachycoin.png') center/cover;
-  opacity: 0.1;
-  z-index: 0;
-}
-
-.twitter-banner {
-  position: relative;
-  z-index: 1;
-  text-align: center;
-}
-
-.twitter-content {
-  display: inline-block;
-  background: rgba(0, 0, 0, 0.8);
-  padding: 15px 30px;
-  border-radius: 25px;
-  border: 2px solid var(--neon-blue);
-  box-shadow: 0 0 30px var(--neon-blue);
-}
-
-.twitter-header {
+  background: url('../images/bopbeachycoin.png') no-repeat center center/cover;
+  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 15px;
-  margin-bottom: 8px;
+  color: white;
+  overflow: hidden;
 }
 
-.x-logo {
-  width: 60px;
-  height: 60px;
+.hero-background-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)),
+    linear-gradient(rgba(0, 240, 255, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 240, 255, 0.1) 1px, transparent 1px);
+  background-size: 100% 100%, 50px 50px, 50px 50px;
+  animation: gridPulse 4s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Compact Twitter CTA */
+.twitter-cta-compact {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.85);
+  padding: 12px 20px;
+  border-radius: 20px;
+  border: 2px solid var(--neon-blue);
+  box-shadow: 0 0 25px var(--neon-blue);
+  text-align: center;
+  z-index: 2;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+.twitter-header-compact {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.x-logo-small {
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   box-shadow: 
-    0 0 15px var(--neon-blue),
-    0 0 30px var(--neon-pink);
+    0 0 10px var(--neon-blue),
+    0 0 20px var(--neon-pink);
   transition: all 0.3s ease;
   animation: logoFloat 3s ease-in-out infinite;
 }
 
-.x-logo:hover {
+.x-logo-small:hover {
   transform: scale(1.1);
   box-shadow: 
-    0 0 25px var(--neon-blue),
-    0 0 50px var(--neon-pink),
-    0 0 75px var(--neon-purple);
+    0 0 15px var(--neon-blue),
+    0 0 30px var(--neon-pink);
 }
 
 @keyframes logoFloat {
   0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-5px); }
+  50% { transform: translateY(-2px); }
 }
 
-.twitter-title {
-  font-size: 1.5rem;
-  color: var(--neon-blue);
-  text-shadow: 0 0 10px var(--neon-blue);
-  margin: 0;
-  font-weight: bold;
-}
-
-.twitter-description {
-  color: var(--text-light);
-  margin-bottom: 15px;
+.twitter-text {
   font-size: 1rem;
+  color: var(--neon-blue);
+  text-shadow: 0 0 8px var(--neon-blue);
+  font-weight: bold;
+  margin: 0;
 }
 
-.twitter-btn {
+.twitter-btn-compact {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 6px;
   background: linear-gradient(45deg, var(--neon-blue), var(--neon-pink));
   color: white;
   text-decoration: none;
-  padding: 12px 25px;
-  border-radius: 25px;
+  padding: 6px 12px;
+  border-radius: 15px;
   font-weight: bold;
-  font-size: 1.1rem;
+  font-size: 0.85rem;
   transition: all 0.3s ease;
-  box-shadow: 0 0 20px rgba(0, 240, 255, 0.5);
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.5);
 }
 
-.twitter-btn:hover {
-  transform: translateY(-3px) scale(1.05);
-  box-shadow: 0 0 30px rgba(0, 240, 255, 0.8);
+.twitter-btn-compact:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 0 25px rgba(0, 240, 255, 0.8);
   background: linear-gradient(45deg, var(--neon-pink), var(--neon-green));
 }
 
+.twitter-description-compact {
+  color: var(--text-light);
+  font-size: 0.85rem;
+  margin: 0;
+  opacity: 0.9;
+}
+
 .twitter-icon {
-  font-size: 1.3rem;
+  font-size: 1rem;
 }
 
 .twitter-arrow {
-  font-size: 1.2rem;
+  font-size: 0.9rem;
   transition: transform 0.3s ease;
 }
 
-.twitter-btn:hover .twitter-arrow {
-  transform: translateX(5px);
+.twitter-btn-compact:hover .twitter-arrow {
+  transform: translateX(3px);
 }
 
 /* Global Styles */
@@ -207,29 +218,15 @@ body::before {
   background: linear-gradient(45deg, var(--neon-pink), var(--neon-green));
 }
 
-/* Hero Section with Background Image */
-#home {
-    position: relative;
-    background: url('../images/bopbeachycoin.png') no-repeat center center/cover;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-}
-
-.neon-grid-background {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(rgba(0, 240, 255, 0.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 240, 255, 0.1) 1px, transparent 1px);
-    background-size: 50px 50px;
-    animation: gridPulse 4s ease-in-out infinite;
-    pointer-events: none;
-    z-index: 0;
+/* Hero Banner Container Positioning */
+#hero-banner .container {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 120px 20px 60px;
 }
 .neon-glow {
     font-size: 4rem;
@@ -1063,23 +1060,40 @@ section {
       font-size: 2rem;
   }
   
-  .twitter-header {
+  #hero-banner {
+      min-height: 100vh;
+  }
+  
+  #hero-banner .container {
+      padding: 100px 15px 40px;
+  }
+  
+  .twitter-cta-compact {
+      position: relative;
+      top: 0;
+      left: 0;
+      transform: none;
+      margin-bottom: 30px;
+      padding: 10px 15px;
+  }
+  
+  .twitter-header-compact {
       flex-direction: column;
-      gap: 10px;
+      gap: 8px;
   }
   
-  .x-logo {
-      width: 50px;
-      height: 50px;
+  .x-logo-small {
+      width: 25px;
+      height: 25px;
   }
   
-  .twitter-title {
-      font-size: 1.3rem;
+  .twitter-text {
+      font-size: 0.9rem;
   }
   
-  .twitter-btn {
-      font-size: 1rem;
-      padding: 10px 20px;
+  .twitter-btn-compact {
+      font-size: 0.8rem;
+      padding: 5px 10px;
   }
 }
 
@@ -1119,27 +1133,37 @@ section {
       padding: 10px 20px;
   }
   
-  .twitter-content {
-      padding: 12px 20px;
+  #hero-banner .container {
+      padding: 80px 10px 30px;
   }
   
-  .twitter-header {
+  .twitter-cta-compact {
+      padding: 8px 12px;
+      border-radius: 15px;
+  }
+  
+  .twitter-header-compact {
       flex-direction: column;
-      gap: 8px;
+      gap: 6px;
+      margin-bottom: 6px;
   }
   
-  .x-logo {
-      width: 40px;
-      height: 40px;
+  .x-logo-small {
+      width: 22px;
+      height: 22px;
   }
   
-  .twitter-title {
-      font-size: 1.1rem;
+  .twitter-text {
+      font-size: 0.85rem;
   }
   
-  .twitter-btn {
-      font-size: 0.9rem;
-      padding: 8px 16px;
+  .twitter-btn-compact {
+      font-size: 0.75rem;
+      padding: 4px 8px;
+  }
+  
+  .twitter-description-compact {
+      font-size: 0.75rem;
   }
   
   .contract-address-main {
