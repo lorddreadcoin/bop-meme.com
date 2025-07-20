@@ -1,9 +1,9 @@
-:root{--neon-blue:#00f0ff;--neon-pink:#ff006e;--neon-green:#39ff14;--neon-purple:#bf00ff;--neon-orange:#ff8c00;--dark-bg:#0a0a0a;--darker-bg:#050505;--text-light:#fff;--text-glow:#00f0ff;--font-family:'Arial','Helvetica',sans-serif;--border-radius:10px}*{
+:root{--neon-blue:#00f0ff;--neon-pink:#ff006e;--neon-green:#39ff14;--neon-purple:#bf00ff;--neon-orange:#ff8c00;--dark-bg:#0a0a0a;--darker-bg:#050505;--text-light:#fff;--text-glow:#00f0ff;--font-family:'Arial','Helvetica',sans-serif;--border-radius:10px;--bop-community-color:#ffe400}*{
 box-sizing:border-box;
 margin:0;
 padding:0}body{
 font-family:var(--font-family);
-background:linear-gradient(135deg,var(--dark-bg) 0,var(--darker-bg) 100%);
+background-image:url('../images/bopbeachy.png');background-repeat:no-repeat;background-position:center top;background-size:cover;background-color:var(--darker-bg);background-attachment:scroll;
 color:var(--text-light);
 line-height:1.6;
 overflow-x:hidden;
