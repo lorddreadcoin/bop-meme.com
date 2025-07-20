@@ -318,11 +318,12 @@ section {
 
 /* DEX Screener Styling */
 .dex-container {
-  max-width: 50%;
+  max-width: 100%;
+  width: 100%;
   margin: 0 auto;
   border-radius: var(--border-radius);
   overflow: hidden;
-  box-shadow: 
+  box-shadow:
     0 0 20px var(--neon-blue),
     inset 0 0 20px rgba(0, 240, 255, 0.1);
   background: rgba(0, 0, 0, 0.5);
@@ -331,7 +332,7 @@ section {
 
 .dex-iframe {
   width: 100%;
-  height: 300px;
+  height: 800px;
   border: none;
   border-radius: var(--border-radius);
 }
