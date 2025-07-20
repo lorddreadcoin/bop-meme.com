@@ -118,8 +118,7 @@ function initCarousel() {
     
     track.addEventListener('mouseleave', () => {
         clearInterval(autoAdvance);
-        // Restart auto-advance
-        setInterval(nextSlide, 5000);
+        autoAdvance = setInterval(nextSlide, 5000);
     });
     
     // Touch/swipe support for mobile
