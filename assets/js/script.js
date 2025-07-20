@@ -239,12 +239,28 @@ function addDynamicStyles() {
 // YouTube API integration
 let youtubePlayer;
 
-// Load YouTube API
+// Load YouTube API with error handling
 function loadYouTubeAPI() {
-    const tag = document.createElement('script');
-    tag.src = 'https://www.youtube-nocookie.com/iframe_api';
-    const firstScriptTag = document.getElementsByTagName('script')[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    // Check if YouTube API is already loaded
+    if (window.YT && window.YT.Player) {
+        onYouTubeIframeAPIReady();
+        return;
+    }
+    
+    // Try to load YouTube API with fallback
+    try {
+        const script = document.createElement('script');
+        script.src = 'https://www.youtube.com/iframe_api';
+        script.onerror = function() {
+            console.warn('YouTube API failed to load, audio player will be limited');
+            // Initialize volume controls without YouTube API
+            initVolumeControls();
+        };
+        document.head.appendChild(script);
+    } catch (error) {
+        console.warn('Could not load YouTube API:', error);
+        initVolumeControls();
+    }
 }
 
 // Called automatically when YouTube API is ready
@@ -257,23 +273,30 @@ function onYouTubeIframeAPIReady() {
         const videoId = src.match(/embed\/([^\?]+)/)?.[1];
         
         if (videoId) {
-            youtubePlayer = new YT.Player(playerElement, {
-                videoId: videoId,
-                playerVars: {
-                    autoplay: 1,
-                    controls: 0,
-                    showinfo: 0,
-                    loop: 1,
-                    fs: 0,
-                    disablekb: 1,
-                    playsinline: 1
-                },
-                events: {
-                    'onReady': onPlayerReady,
-                    'onStateChange': onPlayerStateChange
-                }
-            });
+            try {
+                youtubePlayer = new YT.Player(playerElement, {
+                    videoId: videoId,
+                    playerVars: {
+                        autoplay: 1,
+                        controls: 0,
+                        showinfo: 0,
+                        loop: 1,
+                        fs: 0,
+                        disablekb: 1,
+                        playsinline: 1
+                    },
+                    events: {
+                        'onReady': onPlayerReady,
+                        'onStateChange': onPlayerStateChange
+                    }
+                });
+            } catch (error) {
+                console.warn('Error creating YouTube player:', error);
+                initVolumeControls();
+            }
         }
+    } else {
+        initVolumeControls();
     }
 }
 
@@ -305,42 +328,63 @@ function initVolumeControls() {
         // Update volume when slider changes
         volumeSlider.addEventListener('input', function() {
             const volume = this.value;
-            if (youtubePlayer && youtubePlayer.setVolume) {
-                youtubePlayer.setVolume(volume);
-                
-                // Update slider background
-                const percentage = volume + '%';
-                this.style.background = `linear-gradient(to right, var(--neon-blue) ${percentage}, rgba(255, 255, 255, 0.2) ${percentage})`;
-                
-                // Update mute/unmute button
-                volumeToggle.textContent = volume > 0 ? '🔊' : '🔇';
-                
-                // Store volume preference
-                localStorage.setItem('bopVolume', volume);
+            
+            // Update slider background
+            const percentage = volume + '%';
+            this.style.background = `linear-gradient(to right, var(--neon-blue) ${percentage}, rgba(255, 255, 255, 0.2) ${percentage})`;
+            
+            // Update mute/unmute button
+            volumeToggle.textContent = volume > 0 ? '🔊' : '🔇';
+            
+            // Store volume preference
+            localStorage.setItem('bopVolume', volume);
+            
+            // Try to update YouTube player if available
+            try {
+                if (youtubePlayer && youtubePlayer.setVolume) {
+                    youtubePlayer.setVolume(volume);
+                }
+            } catch (error) {
+                console.warn('Could not set YouTube volume:', error);
             }
         });
         
         // Toggle mute/unmute
         volumeToggle.addEventListener('click', function() {
-            if (youtubePlayer && youtubePlayer.isMuted && youtubePlayer.unMute && youtubePlayer.mute) {
-                if (youtubePlayer.isMuted()) {
-                    youtubePlayer.unMute();
-                    volumeToggle.textContent = '🔊';
-                    volumeSlider.value = localStorage.getItem('bopVolume') || 50;
+            try {
+                if (youtubePlayer && youtubePlayer.isMuted && youtubePlayer.unMute && youtubePlayer.mute) {
+                    if (youtubePlayer.isMuted()) {
+                        youtubePlayer.unMute();
+                        volumeToggle.textContent = '🔊';
+                        volumeSlider.value = localStorage.getItem('bopVolume') || 50;
+                    } else {
+                        youtubePlayer.mute();
+                        volumeToggle.textContent = '🔇';
+                    }
                 } else {
-                    youtubePlayer.mute();
-                    volumeToggle.textContent = '🔇';
+                    // Fallback for when YouTube API isn't available
+                    const currentVolume = volumeSlider.value;
+                    if (currentVolume > 0) {
+                        volumeSlider.value = 0;
+                        volumeToggle.textContent = '🔇';
+                    } else {
+                        volumeSlider.value = localStorage.getItem('bopVolume') || 50;
+                        volumeToggle.textContent = '🔊';
+                    }
+                    // Trigger input event to update styling
+                    volumeSlider.dispatchEvent(new Event('input'));
                 }
+            } catch (error) {
+                console.warn('Could not toggle YouTube mute:', error);
             }
         });
         
         // Load saved volume preference
-        const savedVolume = localStorage.getItem('bopVolume');
-        if (savedVolume) {
-            volumeSlider.value = savedVolume;
-            const percentage = savedVolume + '%';
-            volumeSlider.style.background = `linear-gradient(to right, var(--neon-blue) ${percentage}, rgba(255, 255, 255, 0.2) ${percentage})`;
-        }
+        const savedVolume = localStorage.getItem('bopVolume') || 50;
+        volumeSlider.value = savedVolume;
+        const percentage = savedVolume + '%';
+        volumeSlider.style.background = `linear-gradient(to right, var(--neon-blue) ${percentage}, rgba(255, 255, 255, 0.2) ${percentage})`;
+        volumeToggle.textContent = savedVolume > 0 ? '🔊' : '🔇';
     }
 }
 
