@@ -88,8 +88,9 @@
     <section id="dexscreener">
         <div class="container">
             <h2 class="section-title-glow">DEX Screener</h2>
-            <div class="dex-container-large">
-                <iframe src="https://dexscreener.com/solana/9RBUQTE88wHFbbKgFSMgLeWcTWPyo8dpWpTJ4yaLmZqD?embed=1&theme=dark" frameborder="0" width="100%" height="700" title="BOP Token DEX Screener Chart" class="dex-iframe-large"></iframe>
+            <style>#dexscreener-embed{position:relative;width:100%;padding-bottom:125%;}@media(min-width:1400px){#dexscreener-embed{padding-bottom:65%;}}#dexscreener-embed iframe{position:absolute;width:100%;height:100%;top:0;left:0;border:0;}</style>
+            <div id="dexscreener-embed">
+                <iframe src="https://dexscreener.com/solana/exg2q7714gziyiiDEyZ8nbejNmHKfCWRueG31kQLDDa?embed=1&loadChartSettings=0&chartDefaultOnMobile=1&chartTheme=dark&theme=dark&chartStyle=0&chartType=usd&interval=15" title="BOP Token DEX Screener Chart"></iframe>
             </div>
         </div>
     </section>
@@ -156,6 +157,46 @@
             </div>
         </div>
     </section>
+    
+    <!-- PAC-BOP MADNESS Game Section -->
+    <section id="pac-bop-game">
+        <div class="container">
+            <h2 class="section-title-glow game-banner">PAC-BOP MADNESS</h2>
+            <p class="game-description">Experience the ultimate BOP adventure! Navigate through neon mazes, collect power-ups featuring your favorite BOP memes, and avoid the cyberpunk enemies in this retro-futuristic gaming experience.</p>
+            
+            <div class="game-stats">
+                <div class="stat-item">
+                    Score: <span class="stat-value" id="gameScoreValue">0</span>
+                </div>
+                <div class="stat-item">
+                    Level: <span class="stat-value" id="gameLevelValue">1</span>
+                </div>
+                <div class="stat-item">
+                    Lives: <span class="stat-value" id="gameLivesValue">3</span>
+                </div>
+                <div class="stat-item">
+                    High Score: <span class="stat-value" id="gameHighScoreValue">0</span>
+                </div>
+            </div>
+
+            <canvas id="gameCanvas" width="600" height="600"></canvas>
+            
+            <div class="game-controls">
+                <p>Use <span class="control-key">ARROW KEYS</span> or <span class="control-key">WASD</span> to move Pac-BOP!</p>
+                <p>Press <span class="control-key">SPACEBAR</span> to pause/unpause</p>
+                <p>Collect neon pellets and BOP meme power-ups to increase your score!</p>
+            </div>
+        </div>
+        
+        <div class="game-over" id="gameOverScreen">
+            <h2>GAME OVER!</h2>
+            <p>Final Score: <span id="finalScore">0</span></p>
+            <p>Level Reached: <span id="finalLevel">1</span></p>
+            <button class="restart-btn" onclick="restartGame()">PLAY AGAIN</button>
+        </div>
+    </section>
+    
     <script src="assets/js/script.js"></script>
+    <script src="game-test/game.js"></script>
 </body>
 </html>

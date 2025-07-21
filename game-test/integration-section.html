@@ -1,0 +1,313 @@
+<!-- PAC-BOP GAME SECTION - Add this to your main index.html -->
+<section id="pac-bop-game" class="section">
+  <div class="container">
+    <div class="neon-grid-background"></div>
+    
+    <h2 class="section-title-glow">🎮 PAC-BOP MADNESS</h2>
+    <p class="section-description">
+      Experience the ultimate BOP meme gaming adventure! Navigate through neon-lit mazes, 
+      collect power-ups featuring your favorite BOP memes, and dodge enemies in this 
+      cyberpunk twist on the classic arcade game.
+    </p>
+    
+    <div class="game-preview">
+      <div class="game-features">
+        <div class="feature-item">
+          <div class="feature-icon">🕹️</div>
+          <h3>Classic Arcade Action</h3>
+          <p>Navigate mazes and collect neon pellets</p>
+        </div>
+        
+        <div class="feature-item">
+          <div class="feature-icon">💎</div>
+          <h3>BOP Meme Power-Ups</h3>
+          <p>Collect miniature versions of iconic BOP images</p>
+        </div>
+        
+        <div class="feature-item">
+          <div class="feature-icon">⚡</div>
+          <h3>Neon Cyberpunk Style</h3>
+          <p>Stunning visual effects matching our aesthetic</p>
+        </div>
+        
+        <div class="feature-item">
+          <div class="feature-icon">🏆</div>
+          <h3>Progressive Levels</h3>
+          <p>Increasing difficulty with smarter enemies</p>
+        </div>
+      </div>
+      
+      <div class="game-launch">
+        <div class="game-preview-canvas">
+          <div class="preview-content">
+            <div class="preview-pac">🎭</div>
+            <div class="preview-pellets">
+              <div class="pellet"></div>
+              <div class="pellet"></div>
+              <div class="pellet"></div>
+              <div class="pellet"></div>
+            </div>
+            <div class="preview-enemy"></div>
+          </div>
+        </div>
+        
+        <button class="neon-btn game-launch-btn" onclick="launchPacBopGame()">
+          <span class="btn-text">PLAY PAC-BOP</span>
+          <span class="btn-glow"></span>
+        </button>
+        
+        <p class="game-controls-hint">
+          Use <span class="key-highlight">ARROW KEYS</span> or <span class="key-highlight">WASD</span> to move
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+/* PAC-BOP GAME SECTION STYLES */
+#pac-bop-game {
+  position: relative;
+  background: linear-gradient(135deg, rgba(191, 0, 255, 0.1), rgba(0, 240, 255, 0.1));
+  border-top: 2px solid var(--neon-purple);
+  border-bottom: 2px solid var(--neon-blue);
+}
+
+#pac-bop-game .neon-grid-background {
+  background: 
+    linear-gradient(rgba(255, 0, 110, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 0, 110, 0.1) 1px, transparent 1px);
+  background-size: 30px 30px;
+  animation: gridPulse 6s ease-in-out infinite;
+}
+
+.game-preview {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  margin-top: 40px;
+  align-items: center;
+}
+
+.game-features {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.feature-item {
+  background: rgba(0, 240, 255, 0.05);
+  border: 1px solid var(--neon-blue);
+  border-radius: var(--border-radius);
+  padding: 20px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.feature-item:hover {
+  background: rgba(0, 240, 255, 0.1);
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+  transform: translateY(-5px);
+}
+
+.feature-icon {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  filter: drop-shadow(0 0 10px var(--neon-blue));
+}
+
+.feature-item h3 {
+  color: var(--neon-blue);
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+  text-shadow: 0 0 5px var(--neon-blue);
+}
+
+.feature-item p {
+  color: var(--text-light);
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.game-launch {
+  text-align: center;
+}
+
+.game-preview-canvas {
+  width: 300px;
+  height: 300px;
+  background: var(--darker-bg);
+  border: 3px solid var(--neon-purple);
+  border-radius: var(--border-radius);
+  margin: 0 auto 30px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 
+    0 0 20px var(--neon-purple),
+    inset 0 0 20px rgba(191, 0, 255, 0.1);
+}
+
+.preview-content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: 
+    linear-gradient(rgba(0, 240, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 240, 255, 0.05) 1px, transparent 1px);
+  background-size: 20px 20px;
+  animation: previewGridMove 4s linear infinite;
+}
+
+@keyframes previewGridMove {
+  0% { background-position: 0 0; }
+  100% { background-position: 20px 20px; }
+}
+
+.preview-pac {
+  position: absolute;
+  top: 50%;
+  left: 20px;
+  transform: translateY(-50%);
+  font-size: 2rem;
+  animation: previewPacMove 3s ease-in-out infinite;
+  filter: drop-shadow(0 0 10px var(--neon-pink));
+}
+
+@keyframes previewPacMove {
+  0%, 100% { left: 20px; }
+  50% { left: 250px; }
+}
+
+.preview-pellets {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  gap: 20px;
+}
+
+.pellet {
+  width: 8px;
+  height: 8px;
+  background: var(--neon-green);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--neon-green);
+  animation: pelletGlow 1s ease-in-out infinite alternate;
+}
+
+.pellet:nth-child(2) { animation-delay: 0.25s; }
+.pellet:nth-child(3) { animation-delay: 0.5s; }
+.pellet:nth-child(4) { animation-delay: 0.75s; }
+
+@keyframes pelletGlow {
+  0% { opacity: 0.5; transform: scale(1); }
+  100% { opacity: 1; transform: scale(1.2); }
+}
+
+.preview-enemy {
+  position: absolute;
+  top: 30%;
+  right: 30px;
+  width: 20px;
+  height: 20px;
+  background: var(--neon-orange);
+  border-radius: 50%;
+  box-shadow: 0 0 15px var(--neon-orange);
+  animation: previewEnemyFloat 2s ease-in-out infinite;
+}
+
+@keyframes previewEnemyFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.game-launch-btn {
+  position: relative;
+  font-size: 1.3rem;
+  padding: 15px 40px;
+  margin: 20px 0;
+  background: transparent;
+  border: 2px solid var(--neon-pink);
+  color: var(--neon-pink);
+  text-transform: uppercase;
+  font-weight: bold;
+  letter-spacing: 2px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.game-launch-btn:hover {
+  background: rgba(255, 0, 110, 0.1);
+  box-shadow: 
+    0 0 20px var(--neon-pink),
+    inset 0 0 20px rgba(255, 0, 110, 0.1);
+  transform: translateY(-3px);
+}
+
+.btn-glow {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 0, 110, 0.3), transparent);
+  transition: left 0.5s ease;
+}
+
+.game-launch-btn:hover .btn-glow {
+  left: 100%;
+}
+
+.game-controls-hint {
+  color: var(--neon-green);
+  font-size: 0.9rem;
+  margin-top: 15px;
+  text-shadow: 0 0 5px var(--neon-green);
+}
+
+.key-highlight {
+  color: var(--neon-orange);
+  font-weight: bold;
+  text-shadow: 0 0 5px var(--neon-orange);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .game-preview {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  
+  .game-features {
+    grid-template-columns: 1fr;
+  }
+  
+  .game-preview-canvas {
+    width: 250px;
+    height: 250px;
+  }
+  
+  .game-launch-btn {
+    font-size: 1.1rem;
+    padding: 12px 30px;
+  }
+}
+</style>
+
+<script>
+// Function to launch the Pac-BOP game in a new window/tab
+function launchPacBopGame() {
+  // Open game in new window
+  const gameWindow = window.open(
+    'game-test/index.html', 
+    'PacBopGame', 
+    'width=800,height=700,scrollbars=no,resizable=yes'
+  );
+  
+  if (!gameWindow) {
+    // Fallback if popup blocked
+    window.location.href = 'game-test/index.html';
+  }
+}
+</script>

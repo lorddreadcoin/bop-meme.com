@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pac-BOP Meme Madness - Test Version</title>
+  <style>
+    :root {
+      --neon-blue: #00f0ff;
+      --neon-pink: #ff006e;
+      --neon-green: #39ff14;
+      --neon-purple: #bf00ff;
+      --neon-orange: #ff8c00;
+      --dark-bg: #0a0a0a;
+      --darker-bg: #050505;
+      --text-light: #fff;
+      --text-glow: #00f0ff;
+      --font-family: 'Arial', 'Helvetica', sans-serif;
+      --border-radius: 10px;
+      --bop-community-color: #ffe400;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-family);
+      background: var(--darker-bg);
+      color: var(--text-light);
+      line-height: 1.6;
+      overflow-x: hidden;
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background-image: 
+        linear-gradient(rgba(0,240,255,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,240,255,0.05) 1px, transparent 1px);
+      background-size: 50px 50px;
+      animation: gridPulse 4s ease-in-out infinite;
+    }
+
+    @keyframes gridPulse {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 0.6; }
+    }
+
+    @keyframes neonFlicker {
+      0%, 100% { text-shadow: 0 0 5px currentColor, 0 0 10px currentColor, 0 0 20px currentColor; }
+      50% { text-shadow: 0 0 2px currentColor, 0 0 5px currentColor, 0 0 10px currentColor; }
+    }
+
+    @keyframes neonGlow {
+      0%, 100% { box-shadow: 0 0 5px currentColor, 0 0 10px currentColor, 0 0 20px currentColor; }
+      50% { box-shadow: 0 0 10px currentColor, 0 0 20px currentColor, 0 0 30px currentColor; }
+    }
+
+    @keyframes powerUpPulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.2); opacity: 0.8; }
+    }
+
+    .game-container {
+      text-align: center;
+      padding: 20px;
+      max-width: 800px;
+      width: 100%;
+    }
+
+    .game-title {
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--neon-pink);
+      text-shadow: 0 0 5px var(--neon-pink), 0 0 10px var(--neon-pink), 0 0 20px var(--neon-pink);
+      animation: neonFlicker 2s ease-in-out infinite alternate;
+      margin-bottom: 20px;
+    }
+
+    .game-stats {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .stat-item {
+      background: rgba(0, 240, 255, 0.1);
+      border: 2px solid var(--neon-blue);
+      border-radius: var(--border-radius);
+      padding: 10px 20px;
+      color: var(--neon-blue);
+      font-size: 1.2rem;
+      font-weight: bold;
+      text-shadow: 0 0 5px var(--neon-blue);
+      animation: neonGlow 2s ease-in-out infinite;
+      min-width: 120px;
+    }
+
+    .stat-value {
+      color: var(--neon-green);
+      text-shadow: 0 0 5px var(--neon-green);
+    }
+
+    #gameCanvas {
+      background: var(--darker-bg);
+      border: 4px solid var(--neon-purple);
+      border-radius: var(--border-radius);
+      box-shadow: 
+        0 0 20px var(--neon-purple),
+        inset 0 0 20px rgba(191, 0, 255, 0.1);
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .controls {
+      margin-top: 20px;
+      color: var(--neon-green);
+      font-size: 1rem;
+      text-shadow: 0 0 5px var(--neon-green);
+    }
+
+    .control-key {
+      color: var(--neon-orange);
+      font-weight: bold;
+      text-shadow: 0 0 5px var(--neon-orange);
+    }
+
+    .game-over {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(5, 5, 5, 0.95);
+      border: 3px solid var(--neon-pink);
+      border-radius: var(--border-radius);
+      padding: 30px;
+      text-align: center;
+      color: var(--neon-pink);
+      font-size: 1.5rem;
+      text-shadow: 0 0 10px var(--neon-pink);
+      z-index: 1000;
+      display: none;
+    }
+
+    .restart-btn {
+      background: transparent;
+      border: 2px solid var(--neon-green);
+      color: var(--neon-green);
+      padding: 10px 20px;
+      border-radius: var(--border-radius);
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 15px;
+      text-shadow: 0 0 5px var(--neon-green);
+      transition: all 0.3s ease;
+    }
+
+    .restart-btn:hover {
+      background: rgba(57, 255, 20, 0.1);
+      box-shadow: 0 0 15px var(--neon-green);
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 768px) {
+      .game-title {
+        font-size: 2rem;
+      }
+      
+      .game-stats {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .stat-item {
+        width: 200px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="game-container">
+    <h1 class="game-title">PAC-BOP MADNESS</h1>
+    
+    <div class="game-stats">
+      <div class="stat-item">
+        Score: <span class="stat-value" id="scoreValue">0</span>
+      </div>
+      <div class="stat-item">
+        Level: <span class="stat-value" id="levelValue">1</span>
+      </div>
+      <div class="stat-item">
+        Lives: <span class="stat-value" id="livesValue">3</span>
+      </div>
+      <div class="stat-item">
+        High Score: <span class="stat-value" id="highScoreValue">0</span>
+      </div>
+    </div>
+
+    <canvas id="gameCanvas" width="600" height="600"></canvas>
+    
+    <div class="controls">
+      Use <span class="control-key">ARROW KEYS</span> or <span class="control-key">WASD</span> to move Pac-BOP!<br>
+      Collect neon pellets and power-ups to increase your score!
+    </div>
+  </div>
+
+  <div class="game-over" id="gameOverScreen">
+    <h2>GAME OVER!</h2>
+    <p>Final Score: <span id="finalScore">0</span></p>
+    <p>Level Reached: <span id="finalLevel">1</span></p>
+    <button class="restart-btn" onclick="restartGame()">PLAY AGAIN</button>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
